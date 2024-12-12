@@ -9,8 +9,8 @@ import (
 func TestLuhnCheck(t *testing.T) {
 	validCardNumbers := []string{
 		"4111111111111111", // Visa
-		"5500000000000004", // MasterCard
-		"340000000000009",  // American Express
+		"5555555555554444", // MasterCard
+		"378282246310005",  // American Express
 	}
 
 	invalidCardNumbers := []string{
@@ -20,14 +20,14 @@ func TestLuhnCheck(t *testing.T) {
 	}
 
 	for _, number := range validCardNumbers {
-		if isValid := services.ValidateCard(number); !isValid {
-			t.Errorf("Expected card number %s to be valid", number)
+		if isValid, cardType := services.ValidateCard(number); !isValid {
+			t.Errorf("Expected card type %s number %s to be valid", cardType, number)
 		}
 	}
 
 	for _, number := range invalidCardNumbers {
-		if isValid := services.ValidateCard(number); isValid {
-			t.Errorf("Expected card number %s to be invalid", number)
+		if isValid, cardType := services.ValidateCard(number); isValid {
+			t.Errorf("Expected card type %s number %s to be invalid", cardType, number)
 		}
 	}
 }

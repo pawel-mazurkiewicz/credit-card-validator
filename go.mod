@@ -1,6 +1,6 @@
 module github.com/pawel-mazurkiewicz/credit-card-validator
 
-go 1.23.3
+go 1.23
 
 require (
 	github.com/bytedance/sonic v1.12.5 // indirect
