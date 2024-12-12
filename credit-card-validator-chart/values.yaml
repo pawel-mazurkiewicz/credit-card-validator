@@ -1,0 +1,26 @@
+image:
+  repository: vinpolar/credit-card-validator
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 8080
+  nodePort: 30000
+
+resources:
+  requests:
+    memory: "32Mi"
+    cpu: "50m"
+  limits:
+    memory: "40Mi"
+    cpu: "60m"
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+env: []

@@ -1,0 +1,9 @@
+Thank you for installing the credit-card-validator chart.
+
+Your application is deployed at:
+
+  1. Get the service URL by running these commands in the same namespace:
+     export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "credit-card-validator.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+     kubectl port-forward $POD_NAME 8080:8080 --namespace {{ .Release.Namespace }}
+     
+     Visit http://localhost:8080/validate to send requests.

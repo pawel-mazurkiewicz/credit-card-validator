@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{include "credit-card-validator.fullname" .}}
+  labels:
+    app.kubernetes.io/name: {{include "credit-card-validator.name" .}}
+    helm.sh/chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    app.kubernetes.io/instance: {{.Release.Name}}
+    app.kubernetes.io/version: {{.Chart.AppVersion}}
+spec:
+  replicas: {{.Values.replicaCount}}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{include "credit-card-validator.name" .}}
+      app.kubernetes.io/instance: {{.Release.Name}}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{include "credit-card-validator.name" .}}
+        app.kubernetes.io/instance: {{.Release.Name}}
+    spec:
+      containers:
+        - name: {{include "credit-card-validator.name" .}}
+          image: "{{.Values.image.repository}}:{{.Values.image.tag}}"
+          imagePullPolicy: {{.Values.image.pullPolicy}}
+          ports:
+            - name: http
+              containerPort: {{.Values.service.targetPort}}
+            {{- with .Values.extraEnv }}
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 10}}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
